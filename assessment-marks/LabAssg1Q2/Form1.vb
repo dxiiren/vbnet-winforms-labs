@@ -32,6 +32,24 @@
         Dim blnQuiz As Boolean = Double.TryParse(txtQuiz.Text, dblQuiz)
 
         If blnStudent And blnExam And blnGp And blnTest And blnQuiz Then
+            ' Each component mark is out of its weight (see the form labels):
+            ' Examination 50%, Group Project 25%, Test 15%, Quiz 10%.
+            Dim strRangeError As String = ""
+            If dblExam < 0 Or dblExam > 50 Then
+                strRangeError = "Examination must be between 0 and 50."
+            ElseIf dblGp < 0 Or dblGp > 25 Then
+                strRangeError = "Group Project must be between 0 and 25."
+            ElseIf dblTest < 0 Or dblTest > 15 Then
+                strRangeError = "Test must be between 0 and 15."
+            ElseIf dblQuiz < 0 Or dblQuiz > 10 Then
+                strRangeError = "Quiz must be between 0 and 10."
+            End If
+
+            If strRangeError <> "" Then
+                MsgBox(strRangeError, vbExclamation, "Mark Out Of Range")
+                Return
+            End If
+
             dblTotalMark = dblExam + dblGp + dblTest + dblQuiz
 
             Select Case dblTotalMark

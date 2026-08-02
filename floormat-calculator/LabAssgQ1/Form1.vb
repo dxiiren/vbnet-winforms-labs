@@ -19,6 +19,13 @@
         Dim dblTax As Double
         Dim dblTotal As Double
 
+        ' A mat grade is required — without one the price base would silently be 0.
+        If Not (radStandard.Checked Or radDeluxe.Checked Or radPremium.Checked) Then
+            MessageBox.Show("Please select a mat grade (Standard, Deluxe or Premium) first.",
+                            "Mats R Us", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return
+        End If
+
         If radStandard.Checked = True Then
             dblPrice = dblStandard
         ElseIf radDeluxe.Checked = True Then
