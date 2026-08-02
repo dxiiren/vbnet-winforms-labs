@@ -1,14 +1,21 @@
 # VB.NET WinForms Labs
 
 Two university VB.NET lab solutions (2022) preserved as-is, bundled in one repo. Each is a
-single-form Windows Forms app on .NET Framework 4.7.2:
+single-form Windows Forms app on .NET Framework 4.7.2.
 
-- **floormat** (`floormat-calculator/`) — "Mats R Us" floor-mat price calculator: pick a grade
-  (Standard RM99 / Deluxe RM129 / Premium RM179), a colour (Black +0 / Blue +5 / Other +10),
-  optionally foldable (+25), and it shows subtotal, 6% sales tax, and total due.
-- **marks** (`assessment-marks/`) — student assessment-mark grader: validates five inputs with
-  `TryParse`, sums exam + group project + test + quiz marks, and assigns a grade
-  (A ≥ 85, B ≥ 75, C ≥ 65, D ≥ 55, else E).
+### floormat — "Mats R Us" price calculator (`floormat-calculator/`)
+
+![Mats R Us floor-mat price calculator window](docs/images/floormat.png)
+
+Pick a grade (Standard RM99 / Deluxe RM129 / Premium RM179), a colour (Black +0 / Blue +5 /
+Other +10), optionally foldable (+25), and it shows subtotal, 6% sales tax, and total due.
+
+### marks — assessment-mark grader (`assessment-marks/`)
+
+![Assessment-mark grader window](docs/images/marks.png)
+
+Validates five inputs with `TryParse`, sums exam + group project + test + quiz marks, and
+assigns a grade (A ≥ 85, B ≥ 75, C ≥ 65, D ≥ 55, else E).
 
 > **New developer? Start with [`.docs/tldr.md`](.docs/tldr.md)** — every doc summarised on one
 > page. The full guide lives in [`.docs/`](.docs/README.md).
@@ -90,6 +97,7 @@ vbnet-winforms-labs/
   assessment-marks/
     Assesment Mark Program.sln # solution — archive's "Assesment" spelling kept
     LabAssg1Q2/                # student grade calculator
+  docs/images/                 # README screenshots (floormat.png, marks.png)
   .docs/                       # full documentation set (start at tldr.md)
   .claude/                     # Claude Code skills, hooks, settings
   justfile                     # build/run/stop recipes
