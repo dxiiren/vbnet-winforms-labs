@@ -5,12 +5,14 @@
 
 ## Project: VB.NET WinForms Labs
 
-Two university VB.NET lab solutions (2022), logic preserved as-is in sibling folders (the
-forms carry a cosmetic-only Designer restyle — warm retail palette for floormat, academic
-blue for marks; names/titles/behavior untouched): a "Mats R Us"
-floor-mat price calculator (grade price + colour surcharge + foldable option + 6% sales tax)
-and a student assessment-mark grader (TryParse-validated inputs, exam/group-project/test/quiz
-sum, A–E grade banding). Windows Forms on .NET Framework 4.7.2, no external dependencies.
+Two university VB.NET lab solutions (2022) in sibling folders (the forms carry a cosmetic
+Designer restyle — warm retail palette for floormat, academic blue for marks; names/titles
+untouched): a "Mats R Us" floor-mat price calculator (grade price + colour surcharge +
+foldable option + 6% sales tax) and a student assessment-mark grader (TryParse-validated
+inputs, exam/group-project/test/quiz sum, A–E grade banding). Both labs' input-validation
+gaps are **fixed**: floormat requires a mat grade before pricing, and marks range-checks each
+component against its weight (50/25/15/10). Windows Forms on .NET Framework 4.7.2, no
+external dependencies.
 
 - **Repo:** GitHub — `github.com/dxiiren/vbnet-winforms-labs`
 - **Runs locally only** — no CI/CD, no deployment target, no server. `just run {lab}` builds
@@ -66,9 +68,8 @@ vbnet-winforms-labs/
   run while other projects are running.
 - `just test` runs `tests/smoke.ps1` — a launch/lifecycle smoke suite for BOTH labs (build-all
   gate, window appears with the right title, no startup crash, clean shutdown, warning-baseline
-  gate). It is deliberately NOT a unit-test suite: the logic is UI code-behind and extracting
-  it would rewrite the preserved submissions (see README "Testing"). The suite touches zero
-  lab source.
+  gate, plus static regression gates for the two validation fixes). It is deliberately NOT a
+  unit-test suite: the logic is UI code-behind (see README "Testing"). 17 checks.
 - With Framework MSBuild, every build prints **3 benign warnings** (ToolsVersion 15.0→4.0
   fallback, MSB3644 missing 4.7.2 targeting pack, MSB3270 MSIL/AMD64 note) — expected, exit
   code is still 0. See `.docs/06-troubleshooting/common-issues.md`. Do NOT try to silence
@@ -76,9 +77,10 @@ vbnet-winforms-labs/
   installer needs UAC elevation and hangs unattended runs).
 - Both `.sln` filenames contain spaces (kept from the archive, including the "Assesment"
   spelling) — always quote the paths in shell commands.
-- These are preserved uni assignments: keep the 2022 style (Hungarian prefixes,
-  `Option Strict Off`) in existing code; don't restyle untouched lines. The one sanctioned
-  deviation is the cosmetic Designer restyle (visual properties only).
+- These are uni assignments: keep the 2022 style (Hungarian prefixes, `Option Strict Off`) in
+  existing code; don't restyle untouched lines. Sanctioned deviations so far: the cosmetic
+  Designer restyle (visual properties only) and the two input-validation fixes — keep the
+  latter working; the smoke suite's regression gates fail if either is reverted.
 
 ## Project Skills
 

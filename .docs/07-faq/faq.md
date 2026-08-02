@@ -36,10 +36,11 @@ the hygiene greps. No CI — the suite needs a Windows desktop session to show t
 
 ## The floormat app prices RM0 with no grade selected / the marks app accepts 240 marks. Bug?
 
-Known quirks of the original submissions, documented in
-[../01-overview/architecture.md](../01-overview/architecture.md) and deliberately left
-in place — the repo preserves the coursework as graded. Fix them only as an explicit,
-separately-committed enhancement, never silently.
+Both were real validation gaps in the original submissions, and both are **fixed**: floormat
+requires a mat grade before it prices anything, and marks range-checks every component
+against its weight (exam 0–50, GP 0–25, test 0–15, quiz 0–10) so 60/60/60/60 no longer earns
+an "A". Details in [../01-overview/architecture.md](../01-overview/architecture.md); the
+smoke suite has regression gates for both.
 
 ## Can I open these in Visual Studio instead of using just?
 

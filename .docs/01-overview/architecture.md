@@ -35,8 +35,9 @@ Pricing constants are form-level `Const` fields: `dblStandard = 99`, `dblDeluxe 
 4. Results land in `lblSubTotal` / `lblSalesTax` / `lblTotalDue` via `.ToString("c")`
    (currency format).
 
-Known quirk (preserved): if no grade radio is checked, `dblPrice` stays 0 and the app prices
-tax on the surcharges alone — there is no "nothing selected" guard.
+Validation (fixed): clicking Calculate with **no grade radio checked** used to leave
+`dblPrice` at 0 and price tax on the surcharges alone. The handler now returns early with a
+"Please select a mat grade (Standard, Deluxe or Premium) first." prompt before any pricing.
 
 ## marks — `LabAssg1Q2` / `Form1`
 
@@ -46,15 +47,19 @@ tax on the surcharges alone — there is no "nothing selected" guard.
    `txtExamination`, `txtGroupProject`, `txtTest`, `txtQuiz` — each returning a `bln*` flag.
 2. All five flags must be true (`blnStudent And blnExam And ...`); otherwise a
    "Please input data correctly" warning `MsgBox` and nothing is computed.
-3. Valid path: total = exam + GP + test + quiz; `Select Case` bands the grade
+3. Range gate: each mark must fall within its weight (exam 0–50, GP 0–25, test 0–15,
+   quiz 0–10); the first violation shows a "Mark Out Of Range" `MsgBox` and returns.
+4. Valid path: total = exam + GP + test + quiz; `Select Case` bands the grade
    (>= 85 A, >= 75 B, >= 65 C, >= 55 D, else E); results go to `lblTotalMarks` / `lblGrade`
    and a summary `MsgBox` (student number, name, grade).
 
 `btnClear_Click` empties every textbox and result label; `btnExit_Click` closes the form
 (both labs).
 
-Known quirk (preserved): marks are not range-checked — 60 + 60 + 60 + 60 = 240 happily earns
-an "A".
+Validation (fixed): each component mark is now range-checked against its own weight —
+Examination 0–50, Group Project 0–25, Test 0–15, Quiz 0–10 (the percentages printed on the
+form labels). The old `60 + 60 + 60 + 60 = 240` earning an "A" is rejected with a specific
+"Mark Out Of Range" message naming the offending field; nothing is computed or displayed.
 
 ## Build pipeline
 

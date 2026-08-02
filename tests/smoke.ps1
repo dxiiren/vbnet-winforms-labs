@@ -1,11 +1,12 @@
 # tests/smoke.ps1 — build + launch/lifecycle smoke suite for BOTH labs (floormat + marks).
 #
-# Why smoke tests and not unit tests: these are preserved 2022 lab submissions whose logic
-# all lives in WinForms code-behind click handlers (`Form1.vb`). Unit-testing them would
-# require extracting that logic into testable classes — a rewrite of coursework this repo
-# exists to preserve as submitted. These checks are the honest alternative: prove both
-# solutions build against the documented warning baseline and that each exe launches, shows
-# its window, survives startup, and shuts down cleanly without leaving processes behind.
+# Why smoke tests and not unit tests: these are 2022 lab submissions whose logic all lives
+# in WinForms code-behind click handlers (`Form1.vb`). Unit-testing them would require
+# extracting that logic into testable classes — a rewrite far beyond the labs' scope. These
+# checks are the honest alternative: prove both solutions build against the documented
+# warning baseline, that each exe launches, shows its window, survives startup, and shuts
+# down cleanly — plus cheap source regression gates for the two validation fixes (floormat
+# grade-required, marks per-component range check).
 #
 # Run via `just test` (or: powershell -NoProfile -ExecutionPolicy Bypass -File tests\smoke.ps1).
 # Exit code 0 = full pass. Windows PowerShell 5.1 compatible.
@@ -150,7 +151,7 @@ foreach ($lab in $labs) {
 }
 
 # ── 1. Build gate ────────────────────────────────────────────────────────────
-Write-Host '[1/4] build gate (just build-all)'
+Write-Host '[1/5] build gate (just build-all)'
 Invoke-BuildAll
 Check 'build: `just build-all` exits 0' ($script:buildExit -eq 0) "exit code $($script:buildExit)"
 $exesOk = $true
@@ -169,16 +170,16 @@ if ($script:buildExit -ne 0 -or -not $exesOk) {
 }
 
 # ── 2 + 3. Launch / lifecycle, one lab at a time ─────────────────────────────
-Write-Host '[2/4] launch / lifecycle: floormat'
+Write-Host '[2/5] launch / lifecycle: floormat'
 Test-LabLifecycle -Lab $labs[0]
-Write-Host '[3/4] launch / lifecycle: marks'
+Write-Host '[3/5] launch / lifecycle: marks'
 Test-LabLifecycle -Lab $labs[1]
 
 # ── 4. Warning-baseline gate ─────────────────────────────────────────────────
 # Rebuild BOTH solutions capturing MSBuild output; any warning CODE beyond the documented
 # baseline (ToolsVersion notice is uncoded; MSB3644 + MSB3270 are allowed) fails the suite.
 # A warning-free Build Tools 2022 build passes trivially.
-Write-Host '[4/4] warning-baseline gate (rebuild both)'
+Write-Host '[4/5] warning-baseline gate (rebuild both)'
 Invoke-BuildAll
 Check 'gate: rebuild exits 0' ($script:buildExit -eq 0) "exit code $($script:buildExit)"
 
@@ -188,6 +189,16 @@ $codes = @([regex]::Matches($gateText, '(?i)\bwarning\s+([A-Z]{2,}\d+)') |
 $newCodes = @($codes | Where-Object { $allowedWarningCodes -notcontains $_ })
 Check 'gate: no NEW warning codes beyond documented baseline (ToolsVersion / MSB3644 / MSB3270)' `
     ($newCodes.Count -eq 0) ("new: " + ($newCodes -join ', '))
+
+# ── 5. Source regression gates ───────────────────────────────────────────────
+# Cheap static guards for the validation fixes — they fail if a fix is reverted.
+Write-Host '[5/5] source regression gates'
+$floormatGuard = Select-String -Path (Join-Path $repoRoot 'floormat-calculator\LabAssgQ1\Form1.vb') `
+    -Pattern 'select a mat grade' -Quiet
+Check 'regression: floormat requires a mat-grade selection before pricing' ([bool]$floormatGuard)
+$marksGuard = Select-String -Path (Join-Path $repoRoot 'assessment-marks\LabAssg1Q2\Form1.vb') `
+    -Pattern 'Mark Out Of Range' -Quiet
+Check 'regression: marks range-validates each component against its weight max' ([bool]$marksGuard)
 
 Show-Summary
 if ($script:failed -gt 0) { exit 1 } else { exit 0 }

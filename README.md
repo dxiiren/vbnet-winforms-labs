@@ -1,9 +1,9 @@
 # VB.NET WinForms Labs
 
-Two university VB.NET lab solutions (2022) bundled in one repo, logic preserved as-is. Each
-is a single-form Windows Forms app on .NET Framework 4.7.2. The forms carry a cosmetic-only
-Designer restyle (floormat: warm retail palette; marks: clean academic blue) — control names,
-window titles and all behavior are unchanged from the submissions.
+Two university VB.NET lab solutions (2022) bundled in one repo. Each is a single-form Windows
+Forms app on .NET Framework 4.7.2. The forms carry a cosmetic Designer restyle (floormat:
+warm retail palette; marks: clean academic blue) — control names and window titles unchanged —
+and both labs' input-validation gaps have since been fixed (see Validation below).
 
 ### floormat — "Mats R Us" price calculator (`floormat-calculator/`)
 
@@ -11,13 +11,26 @@ window titles and all behavior are unchanged from the submissions.
 
 Pick a grade (Standard RM99 / Deluxe RM129 / Premium RM179), a colour (Black +0 / Blue +5 /
 Other +10), optionally foldable (+25), and it shows subtotal, 6% sales tax, and total due.
+A grade selection is required — Calculate prompts for one instead of pricing a RM0 base.
 
 ### marks — assessment-mark grader (`assessment-marks/`)
 
 ![Assessment-mark grader window](docs/images/marks.png)
 
-Validates five inputs with `TryParse`, sums exam + group project + test + quiz marks, and
-assigns a grade (A ≥ 85, B ≥ 75, C ≥ 65, D ≥ 55, else E).
+Validates five inputs with `TryParse`, range-checks each component against its weight
+(Examination 0–50, Group Project 0–25, Test 0–15, Quiz 0–10), sums them, and assigns a grade
+(A ≥ 85, B ≥ 75, C ≥ 65, D ≥ 55, else E).
+
+### Validation
+
+Both labs originally shipped with an input-validation gap; both are fixed:
+
+| Was | Now | Where |
+| --- | --- | --- |
+| floormat: clicking Calculate with **no grade radio selected** priced a RM0 base and taxed the surcharges alone | A grade is required — a friendly prompt appears and nothing is computed | `floormat-calculator/LabAssgQ1/Form1.vb` |
+| marks: component marks were **not range-checked** — 60 + 60 + 60 + 60 = 240 earned an "A" | Each mark is validated against its weight max (50 / 25 / 15 / 10); the first violation names the field and nothing is computed | `assessment-marks/LabAssg1Q2/Form1.vb` |
+
+`just test` carries regression gates for both.
 
 > **New developer? Start with [`.docs/tldr.md`](.docs/tldr.md)** — every doc summarised on one
 > page. The full guide lives in [`.docs/`](.docs/README.md).
@@ -78,14 +91,16 @@ launch/lifecycle smoke suite covering **both** labs, exit 0 only on a full pass:
    introduce no warning *codes* beyond the documented three-warning baseline (the uncoded
    ToolsVersion 15.0→4.0 notice, MSB3644, MSB3270 — see Troubleshooting). A warning-free
    Build Tools 2022 build passes trivially.
+4. **Source regression gates** — cheap static checks that the validation fixes stay in place:
+   floormat's grade-required guard and marks' per-weight range check.
 
 **Why smoke tests, not unit tests.** This is deliberately a smoke suite. Both labs are GUI
-coursework preserved as-submitted: all logic lives in the WinForms code-behind click handlers
-of each `Form1.vb`, so meaningful unit tests would require extracting that logic into testable
-classes — a rewrite of the submissions this repo exists to preserve. Rather than ship hollow
-tests that pretend otherwise, the suite verifies what can be verified honestly without
-touching lab source: both solutions build within their documented warning baseline, and each
-exe launches, shows its window, survives startup, and shuts down cleanly.
+coursework: all logic lives in the WinForms code-behind click handlers of each `Form1.vb`, so
+meaningful unit tests would require extracting that logic into testable classes — a rewrite
+far beyond these labs' scope. Rather than ship hollow tests that pretend otherwise, the suite
+verifies what can be verified honestly: both solutions build within their documented warning
+baseline, each exe launches, shows its window, survives startup, shuts down cleanly, and the
+validation fixes have not regressed.
 
 ## Troubleshooting
 

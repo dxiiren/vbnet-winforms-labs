@@ -14,9 +14,10 @@ stamped around the preserved code.
 
 Each lab is one form with all logic in button click handlers in `Form1.vb`; `.Designer.vb`
 files are generated and must stay in sync with `Handles` clauses. floormat: constants →
-subtotal helper → 6% tax helper → currency labels (quirk: no guard when no grade is
-selected). marks: five TryParse flags gate the calculation → Select Case banding → labels +
-MsgBox (quirk: marks aren't range-checked). Build = MSBuild Debug → `bin\Debug\{Project}.exe`.
+subtotal helper → 6% tax helper → currency labels, with a mat grade **required** before any
+pricing (was: silent RM0 base). marks: five TryParse flags gate the calculation → per-weight
+range check (exam 0–50, GP 0–25, test 0–15, quiz 0–10; was: 240 earned an "A") → Select Case
+banding → labels + MsgBox. Build = MSBuild Debug → `bin\Debug\{Project}.exe`.
 
 ## [02-setup/getting-started.md](02-setup/getting-started.md)
 
