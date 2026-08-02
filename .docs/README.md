@@ -66,4 +66,4 @@ calculator + assessment-mark grader).
 
 | Document | What it covers |
 | --- | --- |
-| [faq.md](07-faq/faq.md) | Why two apps, why the filename typo, why no tests/CI, why quirks stay |
+| [faq.md](07-faq/faq.md) | Why two apps, why the filename typo, why smoke tests not unit tests, why quirks stay |

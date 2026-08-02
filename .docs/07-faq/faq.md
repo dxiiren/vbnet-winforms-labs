@@ -1,8 +1,9 @@
 # FAQ
 
 > **TL;DR** Quick answers: why two apps in one repo (same course, same stack, tiny), why the
-> typo in a solution filename (archive fidelity), why no tests/CI (preserved coursework),
-> why the build warns (Framework MSBuild), and why known logic quirks aren't "fixed".
+> typo in a solution filename (archive fidelity), why the tests are a launch smoke suite
+> rather than unit tests (preserved coursework — logic extraction would rewrite it), why the
+> build warns (Framework MSBuild), and why known logic quirks aren't "fixed".
 
 ## Why are two separate solutions in one repo?
 
@@ -23,11 +24,15 @@ You're on the Framework MSBuild that ships with Windows — its 3 warning classe
 documented and benign ([../06-troubleshooting/common-issues.md](../06-troubleshooting/common-issues.md)).
 Installing VS Build Tools 2022 (manual, optional) makes builds warning-free.
 
-## Why no tests, linter, or CI?
+## Why only smoke tests — where are the unit tests and CI?
 
-Preserved coursework, kept as submitted. Verification is the build + launch smoke
-(`just build-all`, `just run {lab}`), scripted in the `/lint-check` skill. Adding test
-infrastructure to a 60-line lab would be scaffolding for its own sake.
+Preserved coursework, kept as submitted: each lab's logic lives entirely in the click
+handlers of its `Form1.vb`, so real unit tests would require extracting that logic into
+testable classes — a rewrite of the graded submissions. Instead `just test` runs an honest
+launch/lifecycle smoke suite (`tests/smoke.ps1`) covering both labs: build-all gate,
+window-appears/no-startup-crash/clean-shutdown checks per exe, and a warning-baseline gate
+that fails on any new warning code beyond the documented three. `/lint-check` still wraps
+the hygiene greps. No CI — the suite needs a Windows desktop session to show the windows.
 
 ## The floormat app prices RM0 with no grade selected / the marks app accepts 240 marks. Bug?
 

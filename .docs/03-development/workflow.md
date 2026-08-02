@@ -32,13 +32,15 @@ just stop               # close it when done
 
 ## Verification
 
-There are no tests. Verification is:
+There are no unit tests — each lab's logic lives in UI click handlers, and extracting it
+would rewrite the preserved coursework (see README "Testing"). Verification is:
 
-1. `just build-all` exits 0 with no new warnings.
-2. `just run {lab}` — the window opens and survives ~5 seconds (no startup crash).
-3. Manual click-through of the changed behavior (e.g. floormat: Standard + Blue + foldable
+1. `just test` — the smoke suite (`tests/smoke.ps1`): build-all gate, launch/lifecycle
+   checks for both labs (window appears with the right title, no startup crash, clean
+   shutdown, no leftover processes), and the warning-baseline gate.
+2. Manual click-through of the changed behavior (e.g. floormat: Standard + Blue + foldable
    = 99 + 5 + 25 = 129 subtotal, 7.74 tax, 136.74 total).
-4. `just stop`.
+3. `just stop` if you still have windows open from `just run {lab}`.
 
 The `/lint-check` and `/pre-pr-review` skills in `.claude/skills/` script this discipline.
 

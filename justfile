@@ -44,6 +44,12 @@ stop:
 clean:
     Get-ChildItem -Directory -Recurse -Include bin,obj -Path '{{justfile_directory()}}\floormat-calculator','{{justfile_directory()}}\assessment-marks' | Remove-Item -Recurse -Force; Write-Host "Cleaned bin/ and obj/ for both labs."
 
+# ─── Tests ───────────────────────────────────────────────
+
+# Run the smoke suite for BOTH labs: build-all gate, launch/lifecycle checks, warning baseline (see README "Testing").
+test:
+    powershell -NoProfile -ExecutionPolicy Bypass -File '{{justfile_directory()}}\tests\smoke.ps1'; exit $LASTEXITCODE
+
 # ─── Tools ───────────────────────────────────────────────
 
 # Launch Claude Code with all permissions — Sonnet (latest)

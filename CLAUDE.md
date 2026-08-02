@@ -62,6 +62,11 @@ vbnet-winforms-labs/
   command for something a recipe already covers.
 - `just stop` kills only THIS repo's lab windows (matched by exe path under the repo) — safe to
   run while other projects are running.
+- `just test` runs `tests/smoke.ps1` — a launch/lifecycle smoke suite for BOTH labs (build-all
+  gate, window appears with the right title, no startup crash, clean shutdown, warning-baseline
+  gate). It is deliberately NOT a unit-test suite: the logic is UI code-behind and extracting
+  it would rewrite the preserved submissions (see README "Testing"). The suite touches zero
+  lab source.
 - With Framework MSBuild, every build prints **3 benign warnings** (ToolsVersion 15.0→4.0
   fallback, MSB3644 missing 4.7.2 targeting pack, MSB3270 MSIL/AMD64 note) — expected, exit
   code is still 0. See `.docs/06-troubleshooting/common-issues.md`. Do NOT try to silence

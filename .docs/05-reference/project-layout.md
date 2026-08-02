@@ -28,6 +28,8 @@ vbnet-winforms-labs/
       App.config
       My Project/
       bin/ obj/                     # build output (git-ignored)
+  tests/
+    smoke.ps1                       # launch/lifecycle smoke suite for both labs (`just test`)
   .docs/                            # this documentation set
   .claude/
     skills/                         # project skills (see skills/README.md)
@@ -37,7 +39,7 @@ vbnet-winforms-labs/
   .mcp.json.stub                    # committed MCP placeholders (.mcp.json is git-ignored)
   CLAUDE.md                         # AI-assistant project brief
   README.md                         # human quick start
-  justfile                          # build/run/stop/clean recipes
+  justfile                          # build/run/stop/clean/test recipes
   setup.ps1                         # one-time machine bootstrap
   .gitignore                        # bin/ obj/ .vs/ *.user + claude local files
 ```
@@ -49,7 +51,7 @@ vbnet-winforms-labs/
 | Hand-written app code | `Form1.vb` (both labs) |
 | Designer-generated (edit with care) | `Form1.Designer.vb`, `Form1.resx`, `My Project/*` |
 | Build output (never commit) | `bin/`, `obj/`, `.vs/` |
-| Kit tooling | `justfile`, `setup.ps1`, `.docs/`, `.claude/`, `README.md`, `CLAUDE.md` |
+| Kit tooling | `justfile`, `setup.ps1`, `tests/`, `.docs/`, `.claude/`, `README.md`, `CLAUDE.md` |
 
 ## Related docs
 

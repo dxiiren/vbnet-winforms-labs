@@ -2,7 +2,7 @@
 
 > **TL;DR** Everything is a `just` recipe. `build`/`run` take a `lab` parameter
 > (`floormat` | `marks`); `build-all` does both; `stop` closes only this repo's windows;
-> `clean` wipes build output.
+> `clean` wipes build output; `test` runs the launch/lifecycle smoke suite for both labs.
 
 ## just recipes
 
@@ -16,6 +16,7 @@
 | `just run marks` | Build then launch `LabAssg1Q2\bin\Debug\LabAssg1Q2.exe` | opens the grader window |
 | `just stop` | Stop processes whose exe path is under this repo | path-scoped — never kills by name |
 | `just clean` | Delete `bin\` and `obj\` in both lab folders | fixes stale-build weirdness |
+| `just test` | Run `tests/smoke.ps1` — build-all gate + launch/lifecycle checks for BOTH labs + warning-baseline gate | exit 0 only on full pass; a smoke suite by design (see README "Testing") |
 | `just claudex` / `claudeo` / `claudeh` | Launch Claude Code (Sonnet / Opus / Haiku), all permissions | |
 
 Any other `lab` value fails fast: `Unknown lab '{x}' — use floormat or marks`.
