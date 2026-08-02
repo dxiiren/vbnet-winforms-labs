@@ -30,7 +30,8 @@ Both labs originally shipped with an input-validation gap; both are fixed:
 | floormat: clicking Calculate with **no grade radio selected** priced a RM0 base and taxed the surcharges alone | A grade is required — a friendly prompt appears and nothing is computed | `floormat-calculator/LabAssgQ1/Form1.vb` |
 | marks: component marks were **not range-checked** — 60 + 60 + 60 + 60 = 240 earned an "A" | Each mark is validated against its weight max (50 / 25 / 15 / 10); the first violation names the field and nothing is computed | `assessment-marks/LabAssg1Q2/Form1.vb` |
 
-`just test` carries regression gates for both.
+`just test` carries regression gates for both — and asserts the guards for real, by driving
+the forms headlessly (see [Testing](#testing)).
 
 > **New developer? Start with [`.docs/tldr.md`](.docs/tldr.md)** — every doc summarised on one
 > page. The full guide lives in [`.docs/`](.docs/README.md).
@@ -72,13 +73,21 @@ Run `just` with no arguments to list every recipe. The ones you'll use daily:
 | `just run floormat` / `just run marks` | Build then launch the lab's window |
 | `just stop` | Close only THIS repo's lab windows (path-scoped) |
 | `just clean` | Delete `bin\` and `obj\` for both labs |
-| `just test` | Run the launch/lifecycle smoke suite for BOTH labs (`tests/smoke.ps1`) |
+| `just test` | Run the full suite for BOTH labs — smoke + logic (50 checks) |
+| `just test-smoke` | Launch/lifecycle half only (`tests/smoke.ps1`, 17 checks) |
+| `just test-logic` | Headless arithmetic half only (`tests/logic.ps1`, 33 checks) |
 | `just claudex` | Launch Claude Code (Sonnet, all permissions) |
 
 ## Testing
 
-`just test` runs [`tests/smoke.ps1`](tests/smoke.ps1) — one parameterized build +
-launch/lifecycle smoke suite covering **both** labs, exit 0 only on a full pass:
+`just test` runs two suites over **both** labs — 50 checks, exit 0 only on a full pass:
+
+| Suite | File | Checks | Scope |
+| --- | --- | --- | --- |
+| smoke | [`tests/smoke.ps1`](tests/smoke.ps1) | 17 | build, launch, window, lifecycle, warning baseline, source gates |
+| logic | [`tests/logic.ps1`](tests/logic.ps1) | 33 | the arithmetic inside the click handlers |
+
+### Smoke suite (`just test-smoke`)
 
 1. **Build gate** — `just build-all` must exit 0 and produce both exes
    (`LabAssgQ1.exe`, `LabAssg1Q2.exe`).
@@ -91,16 +100,40 @@ launch/lifecycle smoke suite covering **both** labs, exit 0 only on a full pass:
    introduce no warning *codes* beyond the documented three-warning baseline (the uncoded
    ToolsVersion 15.0→4.0 notice, MSB3644, MSB3270 — see Troubleshooting). A warning-free
    Build Tools 2022 build passes trivially.
-4. **Source regression gates** — cheap static checks that the validation fixes stay in place:
-   floormat's grade-required guard and marks' per-weight range check.
+4. **Source regression gates** — structural checks that the validation fixes stay in place.
+   Each pins its guard to the *right* handler (`btnCalculate_Click` / `cmdCalculateMark_Click`),
+   next to the right controls (all three grade radios / all four weight bounds 50-25-15-10),
+   and requires it to actually `Return`. A bare "is the message string in the file" grep would
+   pass even if the `Return` were deleted — precisely the revert that matters.
 
-**Why smoke tests, not unit tests.** This is deliberately a smoke suite. Both labs are GUI
-coursework: all logic lives in the WinForms code-behind click handlers of each `Form1.vb`, so
-meaningful unit tests would require extracting that logic into testable classes — a rewrite
-far beyond these labs' scope. Rather than ship hollow tests that pretend otherwise, the suite
-verifies what can be verified honestly: both solutions build within their documented warning
-baseline, each exe launches, shows its window, survives startup, shuts down cleanly, and the
-validation fixes have not regressed.
+### Logic suite (`just test-logic`)
+
+Real value assertions for the arithmetic, with **no change to either `Form1.vb`**. The suite
+`LoadFrom`s the built exe, constructs the Form (its constructor runs `InitializeComponent`, so
+every control exists — but `Show()` / `Application.Run` are never called, so nothing is
+painted), sets inputs through the public `Controls.Find(name, true)` API, invokes the private
+`*_Click` handler by reflection, and reads the result labels back. Both handlers pop modal
+message boxes, so a background watcher thread enumerates the UI thread's dialog windows,
+**records each caption** and posts `WM_CLOSE` — which turns the message boxes themselves into
+assertable behaviour.
+
+- **floormat** — 8 priced combinations of grade (99 / 129 / 179) × colour (0 / 5 / 10) ×
+  foldable (+25), each asserting subtotal, the 6% sales tax and the total
+  (e.g. Deluxe + Blue + foldable → 159.00 / 9.54 / 168.54). Plus the grade-required guard:
+  the info box is raised **and** no price is written.
+- **marks** — every A–E band asserted *on* its cutoff and one mark *below* it (85/84, 75/74,
+  65/64, 55/54), so an off-by-one in any `Case` fails; the four per-weight range guards and a
+  negative mark; the `TryParse` gate (non-numeric mark, empty mark, non-integer student
+  number); and that Clear blanks all six inputs plus both result labels.
+
+Guard checks assert the label state too, so a guard that still *shows* its message but no
+longer stops the calculation fails the suite.
+
+**Why not unit tests.** Extracting `CalculatePrice(grade, colour, foldable)` and
+`BandFor(total)` into plain functions would be the textbook fix, but it would rewrite graded
+2022 submissions. Driving the real Form headlessly gets the same value assertions while
+leaving the coursework byte-for-byte as submitted. Needs a Windows desktop session and an STA
+thread (hence `powershell -STA` in the recipe); there is no CI for the same reason.
 
 ## Troubleshooting
 
@@ -141,7 +174,8 @@ vbnet-winforms-labs/
     Assesment Mark Program.sln # solution — archive's "Assesment" spelling kept
     LabAssg1Q2/                # student grade calculator
   docs/images/                 # README screenshots (floormat.png, marks.png)
-  tests/smoke.ps1              # launch/lifecycle smoke suite for both labs (`just test`)
+  tests/smoke.ps1              # launch/lifecycle smoke suite for both labs (`just test-smoke`)
+  tests/logic.ps1              # headless arithmetic suite for both labs (`just test-logic`)
   .docs/                       # full documentation set (start at tldr.md)
   .claude/                     # Claude Code skills, hooks, settings
   justfile                     # build/run/stop recipes

@@ -29,7 +29,8 @@ vbnet-winforms-labs/
       My Project/
       bin/ obj/                     # build output (git-ignored)
   tests/
-    smoke.ps1                       # launch/lifecycle smoke suite for both labs (`just test`)
+    smoke.ps1                       # launch/lifecycle smoke suite for both labs (`just test-smoke`)
+    logic.ps1                       # headless arithmetic suite for both labs (`just test-logic`)
   .docs/                            # this documentation set
   .claude/
     skills/                         # project skills (see skills/README.md)

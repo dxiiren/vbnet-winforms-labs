@@ -29,7 +29,8 @@ Nothing to install for the build itself — Framework MSBuild ships with Windows
 ## [03-development/workflow.md](03-development/workflow.md)
 
 Edit `Form1.vb` → `just build {lab}` → `just run {lab}` → click through → `just test`
-(smoke suite for both labs) → `just stop`. Keep
+(smoke + logic, 50 checks) → `just stop`. Change a number in `Form1.vb` and you must update
+the expected-value table in `tests/logic.ps1`. Keep
 designer control names in sync with `Handles` clauses; add new `.vb` files to the `.vbproj`
 by hand; match the preserved 2022 style; treat any warning beyond the documented 3-class
 baseline as a regression. Conventional Commits with scopes `floormat`/`marks`/`tooling`/
@@ -43,7 +44,8 @@ any Windows with .NET Framework 4.7.2+ — copy it with its `.exe.config` and do
 ## [05-reference/commands.md](05-reference/commands.md)
 
 The recipe table: `build {lab}`, `build-all`, `run {lab}`, `stop` (path-scoped), `clean`,
-`test` (launch/lifecycle smoke suite for both labs), `claudex/o/h` — plus the MSBuild
+`test` / `test-smoke` (17 launch checks) / `test-logic` (33 headless arithmetic checks),
+`claudex/o/h` — plus the MSBuild
 two-path resolution (VS Build Tools if present, else
 `C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe`) and setup.ps1 behavior.
 
@@ -64,7 +66,7 @@ winget 1602), and quoting the space-containing `.sln` paths.
 ## [07-faq/faq.md](07-faq/faq.md)
 
 Why two apps share a repo (same assignment, Q1+Q2), why the `.sln` typo stays (archive
-fidelity), why smoke tests instead of unit tests (preserved coursework — `just test` covers
-build + launch lifecycle; logic extraction would rewrite it), why known logic quirks are
+fidelity), why there is no unit-test project yet the arithmetic is still asserted (the real
+Forms are driven headlessly instead of extracting the logic), why known logic quirks are
 documented rather than fixed, VS compatibility, and where the archive's bin/obj went
 (excluded on import).

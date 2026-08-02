@@ -2,7 +2,7 @@
 
 > **TL;DR** Everything is a `just` recipe. `build`/`run` take a `lab` parameter
 > (`floormat` | `marks`); `build-all` does both; `stop` closes only this repo's windows;
-> `clean` wipes build output; `test` runs the launch/lifecycle smoke suite for both labs.
+> `clean` wipes build output; `test` runs the smoke + logic suites (50 checks) for both labs.
 
 ## just recipes
 
@@ -16,7 +16,9 @@
 | `just run marks` | Build then launch `LabAssg1Q2\bin\Debug\LabAssg1Q2.exe` | opens the grader window |
 | `just stop` | Stop processes whose exe path is under this repo | path-scoped — never kills by name |
 | `just clean` | Delete `bin\` and `obj\` in both lab folders | fixes stale-build weirdness |
-| `just test` | Run `tests/smoke.ps1` — build-all gate + launch/lifecycle checks for BOTH labs + warning-baseline gate | exit 0 only on full pass; a smoke suite by design (see README "Testing") |
+| `just test` | Run both suites for BOTH labs — 50 checks | exit 0 only on full pass (see README "Testing") |
+| `just test-smoke` | `tests/smoke.ps1` — build-all gate + launch/lifecycle checks + warning-baseline gate + source regression gates | 17 checks |
+| `just test-logic` | `tests/logic.ps1` — loads the built exes, drives the real Forms headlessly, asserts prices/tax/bands/guards | 33 checks; needs `just build-all` first and an STA thread (the recipe passes `-STA`) |
 | `just claudex` / `claudeo` / `claudeh` | Launch Claude Code (Sonnet / Opus / Haiku), all permissions | |
 
 Any other `lab` value fails fast: `Unknown lab '{x}' — use floormat or marks`.

@@ -7,7 +7,8 @@ model: opus
 # Pre-PR Review (Self-Audit)
 
 Self-review your feature-branch diff **before** opening a PR. This repo holds two small
-preserved uni VB.NET WinForms labs (no tests, no analyzers) — the goal is to catch
+preserved uni VB.NET WinForms labs (no analyzers; tests are `just test` — smoke + headless
+logic, never a unit-test project) — the goal is to catch
 correctness, event-wiring, and validation problems early, not to restyle a preserved uni
 project.
 

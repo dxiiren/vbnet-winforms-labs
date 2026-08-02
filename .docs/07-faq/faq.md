@@ -1,9 +1,9 @@
 # FAQ
 
 > **TL;DR** Quick answers: why two apps in one repo (same course, same stack, tiny), why the
-> typo in a solution filename (archive fidelity), why the tests are a launch smoke suite
-> rather than unit tests (preserved coursework — logic extraction would rewrite it), why the
-> build warns (Framework MSBuild), and why known logic quirks aren't "fixed".
+> typo in a solution filename (archive fidelity), why there is no unit-test project even
+> though the arithmetic IS asserted (the Forms are driven headlessly instead of extracting
+> the logic), why the build warns (Framework MSBuild), and why known quirks aren't "fixed".
 
 ## Why are two separate solutions in one repo?
 
@@ -24,23 +24,30 @@ You're on the Framework MSBuild that ships with Windows — its 3 warning classe
 documented and benign ([../06-troubleshooting/common-issues.md](../06-troubleshooting/common-issues.md)).
 Installing VS Build Tools 2022 (manual, optional) makes builds warning-free.
 
-## Why only smoke tests — where are the unit tests and CI?
+## Where are the unit tests, and why is there no CI?
 
-Preserved coursework, kept as submitted: each lab's logic lives entirely in the click
-handlers of its `Form1.vb`, so real unit tests would require extracting that logic into
-testable classes — a rewrite of the graded submissions. Instead `just test` runs an honest
-launch/lifecycle smoke suite (`tests/smoke.ps1`) covering both labs: build-all gate,
-window-appears/no-startup-crash/clean-shutdown checks per exe, and a warning-baseline gate
-that fails on any new warning code beyond the documented three. `/lint-check` still wraps
-the hygiene greps. No CI — the suite needs a Windows desktop session to show the windows.
+There is no unit-test project, because that would mean extracting the click-handler logic
+into testable classes — a rewrite of the graded submissions. The arithmetic is still asserted
+for real, just from the outside: `tests/logic.ps1` (33 checks, `just test-logic`) loads each
+built exe, constructs the actual Form type without ever calling `Show()`, sets the controls
+through the public `Controls.Find` API, invokes the private `*_Click` handler by reflection
+and reads the result labels back — prices with the 6% tax, every A–E band cutoff, the range
+and `TryParse` guards. A watcher thread records and dismisses the modal message boxes, so
+"which dialog appeared" is assertable too. `tests/smoke.ps1` (17 checks) keeps the outside
+covered: build-all gate, window-appears/no-startup-crash/clean-shutdown per exe, the
+warning-baseline gate, and structural gates on the two validation fixes. `just test` runs
+both — 50 checks. `/lint-check` still wraps the hygiene greps. No CI: both suites need a
+Windows desktop session (one shows real windows, the other needs an STA thread and the
+message-box watcher).
 
 ## The floormat app prices RM0 with no grade selected / the marks app accepts 240 marks. Bug?
 
 Both were real validation gaps in the original submissions, and both are **fixed**: floormat
 requires a mat grade before it prices anything, and marks range-checks every component
 against its weight (exam 0–50, GP 0–25, test 0–15, quiz 0–10) so 60/60/60/60 no longer earns
-an "A". Details in [../01-overview/architecture.md](../01-overview/architecture.md); the
-smoke suite has regression gates for both.
+an "A". Details in [../01-overview/architecture.md](../01-overview/architecture.md). Both
+guards are gated twice: structurally in `tests/smoke.ps1` and behaviourally in
+`tests/logic.ps1`, which asserts the message box appears **and** that no result is written.
 
 ## Can I open these in Visual Studio instead of using just?
 

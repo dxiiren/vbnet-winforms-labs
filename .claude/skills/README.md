@@ -16,7 +16,7 @@ Model tiers: `sonnet` (floor) · `opus` (deep reasoning / generation).
 | Skill                                   | What it does                                                                                                                | Model  |
 | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------ |
 | [pre-pr-review](pre-pr-review/SKILL.md) | Self-review the branch diff against a VB.NET WinForms checklist (designer/code-behind sync, calculation correctness, input validation) + the build/launch gate; report to `workspace/reports/pr/`. | opus   |
-| [lint-check](lint-check/SKILL.md)       | Run the honest quality gates this repo has: `just build-all` (new-warning watch over the 3-warning baseline), a debug-leftover grep sweep, and the launch smoke; report pass/fail per layer. | sonnet |
+| [lint-check](lint-check/SKILL.md)       | Run the honest quality gates this repo has: `just build-all` (new-warning watch over the 3-warning baseline), a debug-leftover grep sweep, the launch smoke, and `just test-logic`; report pass/fail per layer. | sonnet |
 
 ## MCP tooling
 

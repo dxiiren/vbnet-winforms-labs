@@ -66,10 +66,19 @@ vbnet-winforms-labs/
   command for something a recipe already covers.
 - `just stop` kills only THIS repo's lab windows (matched by exe path under the repo) — safe to
   run while other projects are running.
-- `just test` runs `tests/smoke.ps1` — a launch/lifecycle smoke suite for BOTH labs (build-all
-  gate, window appears with the right title, no startup crash, clean shutdown, warning-baseline
-  gate, plus static regression gates for the two validation fixes). It is deliberately NOT a
-  unit-test suite: the logic is UI code-behind (see README "Testing"). 17 checks.
+- `just test` runs BOTH suites for BOTH labs — **50 checks**, exit 0 only on a full pass:
+  - `just test-smoke` → `tests/smoke.ps1` (17): build-all gate, window appears with the right
+    title, no startup crash, clean shutdown, warning-baseline gate, plus structural regression
+    gates that pin each validation fix to its own handler and require it to `Return`.
+  - `just test-logic` → `tests/logic.ps1` (33): the **arithmetic**. Loads the built exes,
+    constructs the real Form types (never `Show()`), sets controls via `Controls.Find`, invokes
+    the private `*_Click` handlers by reflection, and asserts the result labels — prices with
+    the 6% tax and the +25 foldable surcharge, every A–E band on its cutoff *and* one below it,
+    the range/`TryParse` guards, and Clear. A background watcher records and dismisses the
+    modal message boxes, so dialog captions are assertable too. Needs STA (`powershell -STA`).
+  - Neither suite touches `Form1.vb` — that is the whole point. Do NOT "make it testable" by
+    extracting `CalculatePrice` / `BandFor`; the headless-Form route already gets the
+    assertions without rewriting graded coursework.
 - With Framework MSBuild, every build prints **3 benign warnings** (ToolsVersion 15.0→4.0
   fallback, MSB3644 missing 4.7.2 targeting pack, MSB3270 MSIL/AMD64 note) — expected, exit
   code is still 0. See `.docs/06-troubleshooting/common-issues.md`. Do NOT try to silence
@@ -80,7 +89,8 @@ vbnet-winforms-labs/
 - These are uni assignments: keep the 2022 style (Hungarian prefixes, `Option Strict Off`) in
   existing code; don't restyle untouched lines. Sanctioned deviations so far: the cosmetic
   Designer restyle (visual properties only) and the two input-validation fixes — keep the
-  latter working; the smoke suite's regression gates fail if either is reverted.
+  latter working; both the smoke suite's structural gates and the logic suite's behavioural
+  guard checks fail if either is reverted.
 
 ## Project Skills
 

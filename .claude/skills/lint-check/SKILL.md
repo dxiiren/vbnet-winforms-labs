@@ -1,15 +1,15 @@
 ---
 name: lint-check
-description: Use when the developer says 'lint check', 'run lint', 'check lint', 'run the quality suite', or 'lint everything' — runs the quality gates this repo has (MSBuild build with a new-warning watch over the known 3-warning baseline, a debug-leftover grep sweep, and the launch smoke) and reports pass/fail per layer.
+description: Use when the developer says 'lint check', 'run lint', 'check lint', 'run the quality suite', or 'lint everything' — runs the quality gates this repo has (MSBuild build with a new-warning watch over the known 3-warning baseline, a debug-leftover grep sweep, the launch smoke, and the headless logic suite) and reports pass/fail per layer.
 model: sonnet
 ---
 
-# lint-check — Quality suite (build gate · grep sweep · launch smoke)
+# lint-check — Quality suite (build gate · grep sweep · launch smoke · logic suite)
 
 This repo has no analyzer/formatter toolchain — two preserved uni VB.NET WinForms labs built
 with Framework MSBuild. The honest quality layers are the compiler/build output itself, a
-grep sweep for debug leftovers, and a launch smoke test. Run all three and report pass/fail
-per layer.
+grep sweep for debug leftovers, a launch smoke test, and the headless logic suite that
+asserts the click handlers' arithmetic. Run all four and report pass/fail per layer.
 
 ## Trigger
 
@@ -66,6 +66,18 @@ Pass = both exes launch and are still alive after ~5 seconds (no startup crash),
 `just stop` reports each PID stopped. These are GUI apps — there is no exit-0 run to
 completion; alive-after-launch IS the smoke.
 
+### 4 — Logic suite
+
+```powershell
+just test-logic     # 33 headless checks over both Form types
+```
+
+Pass = exit 0, `33 passed, 0 failed`. This drives the real Forms without showing them and
+asserts the actual arithmetic (prices + 6% tax, A–E band cutoffs, the input guards). If you
+changed a constant in `Form1.vb`, the expected-value tables in `tests/logic.ps1` must change
+with it — a FAIL here after an intentional change means the test table is stale, not that
+the app is broken.
+
 ---
 
 ## Reporting back
@@ -77,6 +89,7 @@ LAYER      TOOL                        STATUS
 build      just build-all              PASS | FAIL (exit / N new warnings beyond baseline)
 sweep      grep debug-leftovers        PASS | FAIL (N hits)
 smoke      just run + alive + stop     PASS | FAIL (which lab died / wouldn't launch)
+logic      just test-logic             PASS | FAIL (N failed checks)
 OVERALL: PASS | FAIL
 ```
 

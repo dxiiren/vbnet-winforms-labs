@@ -46,9 +46,17 @@ clean:
 
 # ─── Tests ───────────────────────────────────────────────
 
-# Run the smoke suite for BOTH labs: build-all gate, launch/lifecycle checks, warning baseline (see README "Testing").
-test:
+# Full suite for BOTH labs: launch/lifecycle smoke + headless arithmetic logic (see README "Testing").
+test: test-smoke test-logic
+    Write-Host "PASS: smoke + logic suites green" -ForegroundColor Green
+
+# Launch half only: build-all gate, window/lifecycle checks, warning baseline, source regression gates.
+test-smoke:
     powershell -NoProfile -ExecutionPolicy Bypass -File '{{justfile_directory()}}\tests\smoke.ps1'; exit $LASTEXITCODE
+
+# Logic half only: loads the built exes and drives the real Forms headlessly (needs STA, needs `just build-all`).
+test-logic:
+    powershell -NoProfile -STA -ExecutionPolicy Bypass -File '{{justfile_directory()}}\tests\logic.ps1'; exit $LASTEXITCODE
 
 # ─── Tools ───────────────────────────────────────────────
 

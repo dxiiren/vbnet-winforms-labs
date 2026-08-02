@@ -1,12 +1,13 @@
 # tests/smoke.ps1 — build + launch/lifecycle smoke suite for BOTH labs (floormat + marks).
 #
-# Why smoke tests and not unit tests: these are 2022 lab submissions whose logic all lives
-# in WinForms code-behind click handlers (`Form1.vb`). Unit-testing them would require
-# extracting that logic into testable classes — a rewrite far beyond the labs' scope. These
-# checks are the honest alternative: prove both solutions build against the documented
-# warning baseline, that each exe launches, shows its window, survives startup, and shuts
-# down cleanly — plus cheap source regression gates for the two validation fixes (floormat
-# grade-required, marks per-component range check).
+# Scope: the OUTSIDE of each app. Both solutions build against the documented warning
+# baseline, each exe launches, shows its window with the right title, survives startup and
+# shuts down cleanly — plus structural regression gates pinning the two validation fixes to
+# the handlers they belong in.
+#
+# The arithmetic INSIDE the click handlers (prices, 6% tax, weights, A-E bands, the input
+# guards) is asserted separately in tests/logic.ps1, which drives the real Form types
+# headlessly. `just test` runs both; this file is the launch half.
 #
 # Run via `just test` (or: powershell -NoProfile -ExecutionPolicy Bypass -File tests\smoke.ps1).
 # Exit code 0 = full pass. Windows PowerShell 5.1 compatible.
@@ -191,14 +192,54 @@ Check 'gate: no NEW warning codes beyond documented baseline (ToolsVersion / MSB
     ($newCodes.Count -eq 0) ("new: " + ($newCodes -join ', '))
 
 # ── 5. Source regression gates ───────────────────────────────────────────────
-# Cheap static guards for the validation fixes — they fail if a fix is reverted.
+# Static guards for the two validation fixes. Behaviour is asserted for real in
+# tests/logic.ps1; these are the cheap structural half — they pin the guard to the RIGHT
+# handler, next to the RIGHT controls, and require it to actually bail out. A bare
+# "is the message string somewhere in the file" grep would pass even if the `Return` were
+# deleted, which is precisely the revert that matters.
 Write-Host '[5/5] source regression gates'
-$floormatGuard = Select-String -Path (Join-Path $repoRoot 'floormat-calculator\LabAssgQ1\Form1.vb') `
-    -Pattern 'select a mat grade' -Quiet
-Check 'regression: floormat requires a mat-grade selection before pricing' ([bool]$floormatGuard)
-$marksGuard = Select-String -Path (Join-Path $repoRoot 'assessment-marks\LabAssg1Q2\Form1.vb') `
-    -Pattern 'Mark Out Of Range' -Quiet
-Check 'regression: marks range-validates each component against its weight max' ([bool]$marksGuard)
+
+function Get-HandlerBody {
+    param([string]$Path, [string]$Handler)
+    $src = Get-Content -Path $Path -Raw
+    $m = [regex]::Match($src, ('(?s)Private Sub {0}\b.*?End Sub' -f [regex]::Escape($Handler)))
+    if ($m.Success) { $m.Value } else { '' }
+}
+
+# True when an uncommented `Return` sits between $Marker and the `End If` that closes its block.
+function Test-GuardBailsOut {
+    param([string]$Body, [string]$Marker)
+    $i = $Body.IndexOf($Marker)
+    if ($i -lt 0) { return $false }
+    $tail = $Body.Substring($i)
+    $endIf = $tail.IndexOf('End If')
+    if ($endIf -lt 0) { return $false }
+    [bool]($tail.Substring(0, $endIf) -match '(?m)^\s*Return\s*$')
+}
+
+$floormatBody = Get-HandlerBody -Path (Join-Path $repoRoot 'floormat-calculator\LabAssgQ1\Form1.vb') `
+    -Handler 'btnCalculate_Click'
+$floormatGuard = $floormatBody -and
+                 ($floormatBody -match 'select a mat grade') -and
+                 ($floormatBody -match 'radStandard\.Checked\s+Or\s+radDeluxe\.Checked\s+Or\s+radPremium\.Checked') -and
+                 (Test-GuardBailsOut -Body $floormatBody -Marker 'select a mat grade')
+Check 'regression: floormat requires a mat-grade selection before pricing (guard in btnCalculate_Click, tests all 3 grade radios, returns)' `
+    ([bool]$floormatGuard) "handler body found: $([bool]$floormatBody)"
+
+$marksBody = Get-HandlerBody -Path (Join-Path $repoRoot 'assessment-marks\LabAssg1Q2\Form1.vb') `
+    -Handler 'cmdCalculateMark_Click'
+# \b after the literal so a widened bound (`> 100`) can't satisfy the `> 10` pattern.
+$weightBounds = @('dblExam\s*<\s*0\s+Or\s+dblExam\s*>\s*50\b',
+                  'dblGp\s*<\s*0\s+Or\s+dblGp\s*>\s*25\b',
+                  'dblTest\s*<\s*0\s+Or\s+dblTest\s*>\s*15\b',
+                  'dblQuiz\s*<\s*0\s+Or\s+dblQuiz\s*>\s*10\b')
+$missingBounds = @($weightBounds | Where-Object { $marksBody -notmatch $_ })
+$marksGuard = $marksBody -and
+              ($marksBody -match 'Mark Out Of Range') -and
+              ($missingBounds.Count -eq 0) -and
+              (Test-GuardBailsOut -Body $marksBody -Marker 'Mark Out Of Range')
+Check 'regression: marks range-validates each component against its weight max (guard in cmdCalculateMark_Click, all 4 weights 50/25/15/10, returns)' `
+    ([bool]$marksGuard) "handler body found: $([bool]$marksBody); missing bounds: $($missingBounds.Count)"
 
 Show-Summary
 if ($script:failed -gt 0) { exit 1 } else { exit 0 }

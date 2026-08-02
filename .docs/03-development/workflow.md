@@ -32,15 +32,22 @@ just stop               # close it when done
 
 ## Verification
 
-There are no unit tests — each lab's logic lives in UI click handlers, and extracting it
-would rewrite the preserved coursework (see README "Testing"). Verification is:
+The click-handler logic is never extracted — that would rewrite the preserved coursework — so
+it is tested *in place*, by driving the real Form types headlessly (see README "Testing").
+Verification is:
 
-1. `just test` — the smoke suite (`tests/smoke.ps1`): build-all gate, launch/lifecycle
-   checks for both labs (window appears with the right title, no startup crash, clean
-   shutdown, no leftover processes), and the warning-baseline gate.
-2. Manual click-through of the changed behavior (e.g. floormat: Standard + Blue + foldable
+1. `just test` — both suites, 50 checks:
+   - `tests/smoke.ps1` (17): build-all gate, launch/lifecycle checks for both labs (window
+     appears with the right title, no startup crash, clean shutdown, no leftover processes),
+     the warning-baseline gate, and the structural regression gates.
+   - `tests/logic.ps1` (33): the arithmetic — prices + 6% tax + foldable surcharge, the A–E
+     band cutoffs (asserted on the cutoff *and* one mark below), the range and `TryParse`
+     guards, and Clear. Run it alone with `just test-logic`.
+2. **If you change a number in `Form1.vb`, update `tests/logic.ps1`'s case table** — the
+   expected values are written out there, not derived from the source.
+3. Manual click-through of the changed behavior (e.g. floormat: Standard + Blue + foldable
    = 99 + 5 + 25 = 129 subtotal, 7.74 tax, 136.74 total).
-3. `just stop` if you still have windows open from `just run {lab}`.
+4. `just stop` if you still have windows open from `just run {lab}`.
 
 The `/lint-check` and `/pre-pr-review` skills in `.claude/skills/` script this discipline.
 
