@@ -1,7 +1,9 @@
 # VB.NET WinForms Labs
 
-Two university VB.NET lab solutions (2022) preserved as-is, bundled in one repo. Each is a
-single-form Windows Forms app on .NET Framework 4.7.2.
+Two university VB.NET lab solutions (2022) bundled in one repo, logic preserved as-is. Each
+is a single-form Windows Forms app on .NET Framework 4.7.2. The forms carry a cosmetic-only
+Designer restyle (floormat: warm retail palette; marks: clean academic blue) — control names,
+window titles and all behavior are unchanged from the submissions.
 
 ### floormat — "Mats R Us" price calculator (`floormat-calculator/`)
 

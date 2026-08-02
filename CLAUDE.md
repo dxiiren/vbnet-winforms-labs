@@ -5,7 +5,9 @@
 
 ## Project: VB.NET WinForms Labs
 
-Two university VB.NET lab solutions (2022), preserved as-is in sibling folders: a "Mats R Us"
+Two university VB.NET lab solutions (2022), logic preserved as-is in sibling folders (the
+forms carry a cosmetic-only Designer restyle — warm retail palette for floormat, academic
+blue for marks; names/titles/behavior untouched): a "Mats R Us"
 floor-mat price calculator (grade price + colour surcharge + foldable option + 6% sales tax)
 and a student assessment-mark grader (TryParse-validated inputs, exam/group-project/test/quiz
 sum, A–E grade banding). Windows Forms on .NET Framework 4.7.2, no external dependencies.
@@ -75,7 +77,8 @@ vbnet-winforms-labs/
 - Both `.sln` filenames contain spaces (kept from the archive, including the "Assesment"
   spelling) — always quote the paths in shell commands.
 - These are preserved uni assignments: keep the 2022 style (Hungarian prefixes,
-  `Option Strict Off`) in existing code; don't restyle untouched lines.
+  `Option Strict Off`) in existing code; don't restyle untouched lines. The one sanctioned
+  deviation is the cosmetic Designer restyle (visual properties only).
 
 ## Project Skills
 

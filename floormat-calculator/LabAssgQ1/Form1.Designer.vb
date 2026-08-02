@@ -49,8 +49,9 @@ Partial Class frmMatsRUs
         'lblHeader
         '
         Me.lblHeader.AutoSize = True
-        Me.lblHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 26.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblHeader.Location = New System.Drawing.Point(76, 26)
+        Me.lblHeader.Font = New System.Drawing.Font("Segoe UI", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblHeader.ForeColor = System.Drawing.Color.FromArgb(146, 64, 14)
+        Me.lblHeader.Location = New System.Drawing.Point(104, 24)
         Me.lblHeader.Name = "lblHeader"
         Me.lblHeader.Size = New System.Drawing.Size(503, 39)
         Me.lblHeader.TabIndex = 0
@@ -59,7 +60,8 @@ Partial Class frmMatsRUs
         'lblType
         '
         Me.lblType.AutoSize = True
-        Me.lblType.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblType.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblType.ForeColor = System.Drawing.Color.FromArgb(146, 64, 14)
         Me.lblType.Location = New System.Drawing.Point(18, 12)
         Me.lblType.Name = "lblType"
         Me.lblType.Size = New System.Drawing.Size(39, 16)
@@ -69,7 +71,7 @@ Partial Class frmMatsRUs
         'radStandard
         '
         Me.radStandard.AutoSize = True
-        Me.radStandard.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.radStandard.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.radStandard.Location = New System.Drawing.Point(26, 40)
         Me.radStandard.Name = "radStandard"
         Me.radStandard.Size = New System.Drawing.Size(107, 19)
@@ -91,7 +93,7 @@ Partial Class frmMatsRUs
         'radDeluxe
         '
         Me.radDeluxe.AutoSize = True
-        Me.radDeluxe.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.radDeluxe.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.radDeluxe.Location = New System.Drawing.Point(26, 65)
         Me.radDeluxe.Name = "radDeluxe"
         Me.radDeluxe.Size = New System.Drawing.Size(103, 19)
@@ -103,7 +105,7 @@ Partial Class frmMatsRUs
         'radPremium
         '
         Me.radPremium.AutoSize = True
-        Me.radPremium.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.radPremium.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.radPremium.Location = New System.Drawing.Point(26, 90)
         Me.radPremium.Name = "radPremium"
         Me.radPremium.Size = New System.Drawing.Size(115, 19)
@@ -115,7 +117,7 @@ Partial Class frmMatsRUs
         'radOther
         '
         Me.radOther.AutoSize = True
-        Me.radOther.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.radOther.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.radOther.Location = New System.Drawing.Point(21, 90)
         Me.radOther.Name = "radOther"
         Me.radOther.Size = New System.Drawing.Size(149, 19)
@@ -127,7 +129,7 @@ Partial Class frmMatsRUs
         'radBlue
         '
         Me.radBlue.AutoSize = True
-        Me.radBlue.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.radBlue.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.radBlue.Location = New System.Drawing.Point(21, 65)
         Me.radBlue.Name = "radBlue"
         Me.radBlue.Size = New System.Drawing.Size(105, 19)
@@ -139,7 +141,7 @@ Partial Class frmMatsRUs
         'radBlack
         '
         Me.radBlack.AutoSize = True
-        Me.radBlack.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.radBlack.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.radBlack.Location = New System.Drawing.Point(21, 40)
         Me.radBlack.Name = "radBlack"
         Me.radBlack.Size = New System.Drawing.Size(55, 19)
@@ -151,7 +153,8 @@ Partial Class frmMatsRUs
         'lblColor
         '
         Me.lblColor.AutoSize = True
-        Me.lblColor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblColor.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblColor.ForeColor = System.Drawing.Color.FromArgb(146, 64, 14)
         Me.lblColor.Location = New System.Drawing.Point(18, 10)
         Me.lblColor.Name = "lblColor"
         Me.lblColor.Size = New System.Drawing.Size(39, 16)
@@ -161,7 +164,7 @@ Partial Class frmMatsRUs
         'lblSub
         '
         Me.lblSub.AutoSize = True
-        Me.lblSub.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSub.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSub.Location = New System.Drawing.Point(408, 140)
         Me.lblSub.Name = "lblSub"
         Me.lblSub.Size = New System.Drawing.Size(61, 15)
@@ -171,7 +174,7 @@ Partial Class frmMatsRUs
         'lblSales
         '
         Me.lblSales.AutoSize = True
-        Me.lblSales.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSales.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSales.Location = New System.Drawing.Point(408, 169)
         Me.lblSales.Name = "lblSales"
         Me.lblSales.Size = New System.Drawing.Size(67, 15)
@@ -181,7 +184,7 @@ Partial Class frmMatsRUs
         'lblTotal
         '
         Me.lblTotal.AutoSize = True
-        Me.lblTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTotal.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTotal.Location = New System.Drawing.Point(408, 205)
         Me.lblTotal.Name = "lblTotal"
         Me.lblTotal.Size = New System.Drawing.Size(66, 15)
@@ -190,7 +193,9 @@ Partial Class frmMatsRUs
         '
         'lblSalesTax
         '
-        Me.lblSalesTax.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.lblSalesTax.BackColor = System.Drawing.Color.White
+        Me.lblSalesTax.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblSalesTax.ForeColor = System.Drawing.Color.FromArgb(60, 47, 32)
         Me.lblSalesTax.Location = New System.Drawing.Point(481, 170)
         Me.lblSalesTax.Name = "lblSalesTax"
         Me.lblSalesTax.Size = New System.Drawing.Size(122, 19)
@@ -199,7 +204,9 @@ Partial Class frmMatsRUs
         '
         'lblSubTotal
         '
-        Me.lblSubTotal.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.lblSubTotal.BackColor = System.Drawing.Color.White
+        Me.lblSubTotal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblSubTotal.ForeColor = System.Drawing.Color.FromArgb(60, 47, 32)
         Me.lblSubTotal.Location = New System.Drawing.Point(481, 136)
         Me.lblSubTotal.Name = "lblSubTotal"
         Me.lblSubTotal.Size = New System.Drawing.Size(122, 19)
@@ -208,7 +215,9 @@ Partial Class frmMatsRUs
         '
         'lblTotalDue
         '
-        Me.lblTotalDue.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.lblTotalDue.BackColor = System.Drawing.Color.White
+        Me.lblTotalDue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblTotalDue.ForeColor = System.Drawing.Color.FromArgb(60, 47, 32)
         Me.lblTotalDue.Location = New System.Drawing.Point(481, 205)
         Me.lblTotalDue.Name = "lblTotalDue"
         Me.lblTotalDue.Size = New System.Drawing.Size(122, 19)
@@ -217,24 +226,36 @@ Partial Class frmMatsRUs
         '
         'btnCalculate
         '
-        Me.btnCalculate.Location = New System.Drawing.Point(411, 245)
+        Me.btnCalculate.BackColor = System.Drawing.Color.FromArgb(217, 119, 6)
+        Me.btnCalculate.FlatAppearance.BorderSize = 0
+        Me.btnCalculate.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnCalculate.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCalculate.ForeColor = System.Drawing.Color.White
+        Me.btnCalculate.Location = New System.Drawing.Point(411, 243)
         Me.btnCalculate.Name = "btnCalculate"
-        Me.btnCalculate.Size = New System.Drawing.Size(75, 23)
+        Me.btnCalculate.Size = New System.Drawing.Size(90, 30)
         Me.btnCalculate.TabIndex = 16
         Me.btnCalculate.Text = "Calculate"
-        Me.btnCalculate.UseVisualStyleBackColor = True
+        Me.btnCalculate.UseVisualStyleBackColor = False
         '
         'btnExit
         '
-        Me.btnExit.Location = New System.Drawing.Point(528, 248)
+        Me.btnExit.BackColor = System.Drawing.Color.White
+        Me.btnExit.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(196, 172, 132)
+        Me.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnExit.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnExit.ForeColor = System.Drawing.Color.FromArgb(60, 47, 32)
+        Me.btnExit.Location = New System.Drawing.Point(523, 243)
         Me.btnExit.Name = "btnExit"
-        Me.btnExit.Size = New System.Drawing.Size(75, 20)
+        Me.btnExit.Size = New System.Drawing.Size(80, 30)
         Me.btnExit.TabIndex = 17
         Me.btnExit.Text = "Exit"
-        Me.btnExit.UseVisualStyleBackColor = True
+        Me.btnExit.UseVisualStyleBackColor = False
         '
         'Panel1
         '
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel1.Controls.Add(Me.lblType)
         Me.Panel1.Controls.Add(Me.radStandard)
         Me.Panel1.Controls.Add(Me.radPremium)
@@ -246,6 +267,8 @@ Partial Class frmMatsRUs
         '
         'Panel2
         '
+        Me.Panel2.BackColor = System.Drawing.Color.White
+        Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel2.Controls.Add(Me.lblColor)
         Me.Panel2.Controls.Add(Me.radBlack)
         Me.Panel2.Controls.Add(Me.radBlue)
@@ -258,7 +281,8 @@ Partial Class frmMatsRUs
         'frmMatsRUs
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.BackColor = System.Drawing.Color.FromArgb(250, 244, 235)
         Me.ClientSize = New System.Drawing.Size(628, 302)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.Panel1)
@@ -272,7 +296,12 @@ Partial Class frmMatsRUs
         Me.Controls.Add(Me.lblSub)
         Me.Controls.Add(Me.chkFoldable)
         Me.Controls.Add(Me.lblHeader)
+        Me.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ForeColor = System.Drawing.Color.FromArgb(60, 47, 32)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.MaximizeBox = False
         Me.Name = "frmMatsRUs"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Mats-R-Us"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
